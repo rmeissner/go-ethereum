@@ -101,7 +101,7 @@ type Tracer interface {
 	CaptureStart(from common.Address, to common.Address, call bool, input []byte, gas uint64, value *big.Int) error
 	CaptureState(env *EVM, pc uint64, op OpCode, gas, cost uint64, memory *Memory, stack *Stack, contract *Contract, depth int, err error) error
 	CaptureFault(env *EVM, pc uint64, op OpCode, gas, cost uint64, memory *Memory, stack *Stack, contract *Contract, depth int, err error) error
-	CaptureEnd(output []byte, gasUsed uint64, t time.Duration, err error) error
+	CaptureEnd(env *EVM, output []byte, gasUsed uint64, t time.Duration, err error) error
 }
 
 // StructLogger is an EVM state logger and implements Tracer.
@@ -191,7 +191,7 @@ func (l *StructLogger) CaptureFault(env *EVM, pc uint64, op OpCode, gas, cost ui
 }
 
 // CaptureEnd is called after the call finishes to finalize the tracing.
-func (l *StructLogger) CaptureEnd(output []byte, gasUsed uint64, t time.Duration, err error) error {
+func (l *StructLogger) CaptureEnd(env *EVM, output []byte, gasUsed uint64, t time.Duration, err error) error {
 	l.output = output
 	l.err = err
 	if l.cfg.Debug {
