@@ -113,6 +113,11 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 			Version:   "1.0",
 			Service:   NewPrivateAccountAPI(apiBackend, nonceLock),
 			Public:    false,
+		}, {
+			Namespace: "relay",
+			Version:   "1.0",
+			Service:   NewTxRelayAPI(apiBackend),
+			Public:    true,
 		},
 	}
 }
